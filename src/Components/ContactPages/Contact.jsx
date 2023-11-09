@@ -1,9 +1,8 @@
 
-
-const Contact = () => {
+const Contact = (props) => {
     return (
-        <div style={{border: "1px solid gray", height: "100px"}} className="m-2" >
-            
+        <div>
+            <button className="btn btn-secondary form-control">{props.contact.name}</button>
         </div>
     );
 }
