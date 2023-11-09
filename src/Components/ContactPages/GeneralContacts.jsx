@@ -6,7 +6,7 @@ const GeneralContacts = (props) => {
       <div className="text-center text-white-50">Other Contacts</div>
       <div className="p-2">
         {props.contacts.map((contact, index) => (
-          <Contact contact={contact} index={index}></Contact>
+          <Contact handleFavoritesContact={props.handleFavoritesContact} contact={contact} key={index}></Contact>
         ))}
       </div>
     </div>
