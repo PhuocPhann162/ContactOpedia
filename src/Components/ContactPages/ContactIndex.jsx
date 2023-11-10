@@ -62,7 +62,7 @@ class ContactIndex extends React.Component {
       };
       this.setState((previousState) => {
         return {
-          contactList: previousState.contactList.concat(newFinalContact),
+          contactList: previousState.contactList.concat([newFinalContact]),
         };
       });
       return { status: "success", msg: "Contact was successfully added" };
@@ -85,10 +85,23 @@ class ContactIndex extends React.Component {
       return {
         contactList: prevState.contactList.filter(
           (c) => c.id !== contactDel.id
-        ),
+        ),  
       };
     });
   };
+
+  handleAddRandomContact = (contactRandom) => {
+    const newFinalContact = {
+      ...contactRandom,
+      id: (this.state.contactList[this.state.contactList.length - 1].id + 1),
+      isFavorite: false,
+    }
+    this.setState((prevState) => {
+      return {
+        contactList: prevState.contactList.concat([newFinalContact]),
+      }
+    })
+  }
 
   render() {
     return (
@@ -97,7 +110,7 @@ class ContactIndex extends React.Component {
         <div className="container" style={{ minHeight: "85vh" }}>
           <div className="row py-3">
             <div className="col-4 offset-2">
-              <AddRandomContact />
+              <AddRandomContact handleAddRandomContact={this.handleAddRandomContact}/>
             </div>
             <div className="col-4">
               <RemoveAllContact />
