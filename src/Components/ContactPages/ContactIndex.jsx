@@ -57,7 +57,7 @@ class ContactIndex extends React.Component {
     } else {
       const newFinalContact = {
         ...newContact,
-        id: this.state.contactList[this.state.contactList.length - 1].id + 1,
+        id: (this.state.contactList.length === 0) ? 1 : this.state.contactList[this.state.contactList.length - 1].id + 1,
         isFavorite: false,
       };
       this.setState((previousState) => {
@@ -91,14 +91,23 @@ class ContactIndex extends React.Component {
   };
 
   handleAddRandomContact = (contactRandom) => {
+    
     const newFinalContact = {
       ...contactRandom,
-      id: (this.state.contactList[this.state.contactList.length - 1].id + 1),
+      id: (this.state.contactList.length === 0) ? 1 : this.state.contactList[this.state.contactList.length - 1].id + 1,
       isFavorite: false,
     }
     this.setState((prevState) => {
       return {
         contactList: prevState.contactList.concat([newFinalContact]),
+      }
+    })
+  }
+
+  handleRemoveAllContact = (contactRemoveAll) => {
+    this.setState(() => {
+      return {
+        contactList: [],
       }
     })
   }
@@ -113,7 +122,7 @@ class ContactIndex extends React.Component {
               <AddRandomContact handleAddRandomContact={this.handleAddRandomContact}/>
             </div>
             <div className="col-4">
-              <RemoveAllContact />
+              <RemoveAllContact handleRemoveAllContact={this.handleRemoveAllContact} />
             </div>
           </div>
           <div className="row py-2">
