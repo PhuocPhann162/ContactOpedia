@@ -3,13 +3,19 @@ import React from "react";
 class Contact extends React.Component {
   constructor(props) {
     super(props);
-    this.handleFavoriteButton = this.handleFavoriteButton.bind(this)
+    this.handleFavoriteButton = this.handleFavoriteButton.bind(this);
+    this.handleDeleteButton = this.handleDeleteButton.bind(this);
   }
 
   handleFavoriteButton = (e) => {
     e.preventDefault();
     this.props.handleFavoritesContact(this.props.contact);
-  }
+  };
+
+  handleDeleteButton = (e) => {
+    e.preventDefault();
+    this.props.handleDeleteContact(this.props.contact);
+  };
 
   render() {
     return (
@@ -34,9 +40,12 @@ class Contact extends React.Component {
           </div>
         </div>
         <div className="col-2 col-md-2 pt-md-3">
-          <button onClick={this.handleFavoriteButton}
+          <button
+            onClick={this.handleFavoriteButton}
             className={`btn btn-sm m-1 ${
-              this.props.contact.isFavorite ? "btn-warning" : "btn-outline-warning"
+              this.props.contact.isFavorite
+                ? "btn-warning"
+                : "btn-outline-warning"
             }`}
           >
             <i className="bi bi-star" style={{ fontSize: "1rem" }}></i>
@@ -46,7 +55,7 @@ class Contact extends React.Component {
           <button className="btn btn-primary btn-sm m-1">
             <i className="bi bi-pencil-square" style={{ fontSize: "1rem" }}></i>
           </button>
-          <button className="btn btn-danger btn-sm m-1">
+          <button onClick={this.handleDeleteButton} className="btn btn-danger btn-sm m-1">
             <i className="bi bi-trash3" style={{ fontSize: "1rem" }}></i>
           </button>
         </div>

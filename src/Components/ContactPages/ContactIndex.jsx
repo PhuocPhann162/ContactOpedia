@@ -39,26 +39,53 @@ class ContactIndex extends React.Component {
   }
 
   handleAddContact = (newContact) => {
-    const newFinalContact = {
-      ...newContact,
-      id: this.state.contactList[this.state.contactList.length - 1].id + 1,
-      isFavorite: false,
-    };
-    this.setState((previousState) => {
-      return {
-        contactList: previousState.contactList.concat(newFinalContact),
-      };
+    if (newContact.name === "") {
+      return { status: "failure", msg: "Please Enter a valid Name" };
+    } else if (newContact.phone === "") {
+      return { status: "failure", msg: "Please Enter a valid Phone Number" };
+    }
+
+    const duplicateRecord = this.state.contactList.filter((c) => {
+      if (c.name === newContact.name && c.phone === newContact.phone) {
+        return true;
+      }
+      return false;
     });
+
+    if (duplicateRecord.length > 0) {
+      return { status: "failure", msg: "Duplicate Record" };
+    } else {
+      const newFinalContact = {
+        ...newContact,
+        id: this.state.contactList[this.state.contactList.length - 1].id + 1,
+        isFavorite: false,
+      };
+      this.setState((previousState) => {
+        return {
+          contactList: previousState.contactList.concat(newFinalContact),
+        };
+      });
+      return { status: "success", msg: "Contact was successfully added" };
+    }
   };
-  handleFavoritesContact = (updateContact) => {
+  handleFavoritesContact = (contactFav) => {
     this.setState((prevState) => {
       return {
         contactList: prevState.contactList.map((c) => {
-          if (c.id === updateContact.id) {
-              return { ...c, isFavorite: !updateContact.isFavorite };
+          if (c.id === contactFav.id) {
+            return { ...c, isFavorite: !contactFav.isFavorite };
           }
           return c;
         }),
+      };
+    });
+  };
+  handleDeleteContact = (contactDel) => {
+    this.setState((prevState) => {
+      return {
+        contactList: prevState.contactList.filter(
+          (c) => c.id !== contactDel.id
+        ),
       };
     });
   };
@@ -83,7 +110,9 @@ class ContactIndex extends React.Component {
           </div>
           <div className="row py-2">
             <div className="col-8 offset-2 row">
-              <FavoriteContacts handleFavoritesContact={this.handleFavoritesContact}
+              <FavoriteContacts
+                handleFavoritesContact={this.handleFavoritesContact}
+                handleDeleteContact={this.handleDeleteContact}
                 contacts={this.state.contactList.filter(
                   (u) => u.isFavorite === true
                 )}
@@ -92,7 +121,9 @@ class ContactIndex extends React.Component {
           </div>
           <div className="row py-2">
             <div className="col-8 offset-2 row">
-              <GeneralContacts handleFavoritesContact={this.handleFavoritesContact}
+              <GeneralContacts
+                handleFavoritesContact={this.handleFavoritesContact}
+                handleDeleteContact={this.handleDeleteContact}
                 contacts={this.state.contactList.filter(
                   (u) => u.isFavorite === false
                 )}
